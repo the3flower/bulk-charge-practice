@@ -44,32 +44,44 @@ This project involves developing a Rails application to handle bulk creation of 
 #### 4.1 CSV Upload
 - **Details:** Users should be able to upload CSV files containing card information to create charges (transactions).
 
-#### 4.2 Transaction History
-- **Details:** Display the transaction history for each CSV row, including API responses for tokens and charge endpoints.
+#### 4.2 CSV Download
+- **Details:** Users should be able to download previously uploaded CSV files for reference.
 
-#### 4.3 Background Processing
+### 5. Transaction Monitoring
+
+**Objective:** Implement functionality to monitor and track transactions related to CSV file uploads.
+
+**Details:** The application should allow users to view previous transaction attempts for each CSV row, including the API responses returned for each (both token and charge endpoints).
+
+### 6. Background Processing
+
+**Objective:** Process CSV files in the background to improve performance and user experience.
+
 - **Details:** Use Sidekiq to process CSV files in the background, ensuring that large files do not block the main thread.
 
-#### 4.4 CSV Status Tracking
+### 7. CSV Status Tracking
+
+**Objective:** Track the processing status of each CSV file.
+
 - **Details:** Track the status of each CSV file, with possible statuses including:
   - `pending`
   - `in_process`
   - `finished`
   - `finished_with_error`
 
-### 5. Endpoint Configuration
+### 8. Endpoint Configuration
 
 **Objective:** Allow configuration of API endpoints via environment variables.
 
 - **Details:** Use environment variables (`ENV`) to configure endpoints for making requests to external services (e.g., vault and core services).
 
-### 6. Testing
+### 9. Testing
 
 **Objective:** Write comprehensive unit tests to ensure code quality and reliability.
 
 - **Details:** Write unit tests for all models, controllers, background jobs, and service classes.
 
-### 7. GitHub Integration
+### 10. GitHub Integration
 
 **Objective:** Ensure the project is ready for collaboration and review.
 
