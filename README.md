@@ -51,7 +51,7 @@ This project involves developing a Rails application to handle bulk creation of 
 
 **Objective:** Implement functionality to monitor and track transactions related to CSV file uploads.
 
-**Details:** The application should allow users to view previous transaction attempts for each CSV row, including the API responses returned for each (both token and charge endpoints).
+- **Details:** The application should allow users to view previous transaction attempts for each CSV row, including the API responses returned for each (both token and charge endpoints).
 
 ### 6. Background Processing
 
@@ -86,3 +86,9 @@ This project involves developing a Rails application to handle bulk creation of 
 **Objective:** Ensure the project is ready for collaboration and review.
 
 - **Details:** Push the project to GitHub and split the work into multiple stories or PRs. This breakdown will make it easier for reviewers to review and understand the changes.
+
+## APIs Used
+
+- **About APIs Guide:** [Step-by-Step Guide](https://docs.opn.ooo/step-by-step-guide)
+- **Token API:** [Documentation](https://docs.opn.ooo/tokens-api)
+- **Charge API:** [Documentation](https://docs.opn.ooo/charges-api)
