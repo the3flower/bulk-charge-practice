@@ -1,5 +1,5 @@
 class TransactionsController < ApplicationController
-  http_basic_authenticate_with name: "bill", password: "password", except: :index
+  http_basic_authenticate_with name: "bill", password: "1234"
 
   def index
     render plain: "Transaction page"
