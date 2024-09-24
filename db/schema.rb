@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_20_060416) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_23_163552) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -39,6 +39,27 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_20_060416) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "csv_files", force: :cascade do |t|
+    t.string "file_name"
+    t.string "file_path"
+    t.datetime "upload_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.integer "csv_file_id", null: false
+    t.string "token"
+    t.string "currency"
+    t.integer "amount"
+    t.string "status"
+    t.json "api_response"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["csv_file_id"], name: "index_transactions_on_csv_file_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "transactions", "csv_files"
 end
