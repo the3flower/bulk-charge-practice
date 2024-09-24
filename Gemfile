@@ -68,3 +68,6 @@ gem "faraday"
 
 # File Upload
 gem "image_processing", ">= 1.2"
+
+# dotenv
+gem "dotenv", groups: [ :development, :test ]
