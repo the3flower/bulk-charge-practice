@@ -1,8 +1,6 @@
 class CsvFilesController < ApplicationController
-  http_basic_authenticate_with name: ENV["BASIC_AUTH_NAME"], password: ENV["BASIC_AUTH_PASSWORD"]
-
   def index
-    render plain: "csv files page"
+    render "index"
   end
 
   def upload
@@ -11,5 +9,9 @@ class CsvFilesController < ApplicationController
 
   def download
     render plain: "csv files page: download"
+  end
+
+  def destroy
+    render plain: "csv files page: delete"
   end
 end

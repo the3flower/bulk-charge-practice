@@ -2,7 +2,12 @@ Rails.application.routes.draw do
   root to: "csv_files#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :csv_files, only: [ :index, :upload, :download ]
+  resources :csv_files, only: [ :index, :destroy ] do
+    collection do
+      post "upload"
+      post "download"
+    end
+  end
   resources :transactions, only: [ :index, :create, :show ]
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

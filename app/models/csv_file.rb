@@ -1,3 +1,3 @@
 class CsvFile < ApplicationRecord
-  has_one_attached :file
+  has_many_attached :file
 end
