@@ -1,9 +1,23 @@
-<h1>CSV Upload & Download</h1>
+<h1>Uploaded CSV Files</h1>
 
-<%= form_with do |form| %>
-    <div>
-        <%= form.label :file %>
-        <%= form.file_field :file %>
-    </div>
-  <%= form.submit "Upload CSV" %>
-<% end %>
+<table>
+  <thead>
+    <tr>
+      <th>File Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @csv_files.each do |csv_file| %>
+      <tr>
+        <td><%= csv_file.file_name %></td>
+        <td>
+          <%= link_to 'Download', download_csv_file_path(csv_file) %> |
+          <%= link_to 'Delete', csv_file_path(csv_file), method: :delete, data: { confirm: "Are you sure?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%= link_to 'Upload New File', new_csv_file_path %>

@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   root to: "csv_files#index"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  resources :csv_files, only: [ :index, :destroy ] do
+  resources :csv_files, only: [ :index, :new, :destroy ] do
+    member do
+      get "download"
+    end
     collection do
       post "upload"
-      post "download"
     end
   end
   resources :transactions, only: [ :index, :create, :show ]
