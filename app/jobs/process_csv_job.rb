@@ -1,5 +1,3 @@
-require "csv"
-
 class ProcessCsvJob < ApplicationJob
   queue_as :default
 
@@ -21,14 +19,19 @@ class ProcessCsvJob < ApplicationJob
 
         # Generate token using TokenApiService
         token_response = TokenApiService.new(card_details).create_token
+        token_id = token_response["id"]
 
-        # Log the transaction as successful
+        # Create charge using the generated token
+        charge_response = PaymentGatewayService.new(token_id, row["charge_amount"], row["charge_currency"]).create_charge
+
+        # Log the transaction as successful if charge was created
         Transaction.create!(
           csv_file_id: csv_file.id,
-          token: token_response["id"],  # token ID from response
+          token: token_id,  # token ID from response
           amount: row["charge_amount"],
           currency: row["charge_currency"],
-          status: "success"
+          status: charge_response["status"],  # e.g., "success", "failed"
+          api_response: charge_response  # Store the API response if needed
         )
       rescue => e
         # Log the transaction as failed
@@ -37,6 +40,7 @@ class ProcessCsvJob < ApplicationJob
           amount: row["charge_amount"],
           currency: row["charge_currency"],
           status: "failed",
+          # Optionally, store the error message
           # error_message: e.message
         )
       end

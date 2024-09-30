@@ -21,3 +21,28 @@
 </table>
 
 <%= link_to 'Upload New File', new_csv_file_path %>
+
+<h2>List of Charges</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>CSV File Name</th>
+      <th>Amount</th>
+      <th>Currency</th>
+      <th>Status</th>
+      <th>Response</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @transactions.each do |transaction| %>
+      <tr>
+        <td><%= transaction.csv_file.file_name %></td> <!-- Display the associated CSV file name -->
+        <td><%= transaction.amount %></td>
+        <td><%= transaction.currency %></td>
+        <td><%= transaction.status %></td>
+        <td><%= transaction.api_response %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

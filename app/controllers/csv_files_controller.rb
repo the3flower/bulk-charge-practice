@@ -3,6 +3,7 @@ class CsvFilesController < ApplicationController
 
   def index
     @csv_files = CsvFile.all
+    @transactions = Transaction.all
   end
 
   def new
