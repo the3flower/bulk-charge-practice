@@ -1,0 +1,29 @@
+<h1>Upload CSV File Form</h1>
+
+<%= form_with model: @csv_file, url: upload_csv_files_path, local: true do |form| %>
+  <div>
+    <%= form.label :file_name %>
+    <%= form.text_field :file_name %>
+  </div>
+
+  <div>
+    <%= form.label :file %>
+    <%= form.file_field :file %>
+  </div>
+
+  <%= form.submit 'Upload' %>
+  <!--
+  <% if @csv_file.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@csv_file.errors.count, "error") %> prohibited this file from being saved:</h2>
+    <ul>
+      <% @csv_file.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+  </div>
+  <% end %>
+  -->
+<% end %>
+
+<%= link_to 'Back', csv_files_path %>
