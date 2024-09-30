@@ -1,63 +1,61 @@
+require "csv"
+
 class ProcessCsvJob < ApplicationJob
   queue_as :default
 
   def perform(csv_file_id)
-    # Fetch the CSV
     csv_file = CsvFile.find(csv_file_id)
-
-    # Update status to in_process
+    logger.debug "Starting background job for CSV file ID: #{csv_file_id}"
     csv_file.update(status: "in_process")
 
-    # Read the attached CSV file
-    csv_data = CSV.read(csv_file.file.download, headers: true)
+    # Read the CSV file content
+    file_content = csv_file.file.download
+
+    # Parse the CSV content
+    csv_data = CSV.parse(file_content, headers: true)
 
     csv_data.each do |row|
       begin
-        # Call the methods to generate token and charge
-        token = generate_token(row)
-        charge = create_charge(token, row)
+        # Extract card details from the CSV row
+        card_details = extract_card_details(row)
 
-        # Log the transaction in the transactions table
+        # Generate token using TokenApiService
+        token_response = TokenApiService.new(card_details).create_token
+
+        # Log the transaction as successful
         Transaction.create!(
           csv_file_id: csv_file.id,
-          token: token,
-          currency: row["currency"],
-          amount: row["amount"].to_i,
-          status: "success",
-          api_response: charge
+          token: token_response["id"],  # token ID from response
+          amount: row["charge_amount"],
+          currency: row["charge_currency"],
+          status: "success"
         )
       rescue => e
-        # If an error occurs, log it
+        # Log the transaction as failed
         Transaction.create!(
           csv_file_id: csv_file.id,
-          token: nil,
-          currency: row["currency"],
-          amount: row["amount"].to_i,
+          amount: row["charge_amount"],
+          currency: row["charge_currency"],
           status: "failed",
-          api_response: { error: e.message }
+          # error_message: e.message
         )
       end
     end
 
-    # After processing all rows, update the status of the CSV file
-    if csv_file.transactions.where(status: "failed").any?
-      csv_file.update(status: "finished_with_errors")
-    else
-      csv_file.update(status: "finished")
-    end
+    csv_file.update(status: "finished")
   end
 
   private
 
-  def generate_token(row)
-    # Simulate API request to generate a token
-    # Replace with your actual API call logic
-    "token_#{SecureRandom.hex(10)}"
-  end
-
-  def create_charge(token, row)
-    # Simulate API request to create a charge
-    # Replace with your actual API call logic
-    { status: "success", charge_id: SecureRandom.hex(10) }
+  def extract_card_details(row)
+    {
+      card_name: row["card_name"],
+      card_number: row["card_number"],
+      expiration_month: row["card_expiration_month"],
+      expiration_year: row["card_expiration_year"],
+      card_city: row["card_city"],
+      card_postal_code: row["card_postal_code"],
+      card_security_code: row["card_security_code"]
+    }
   end
 end

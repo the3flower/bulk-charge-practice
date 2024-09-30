@@ -12,8 +12,12 @@ class CsvFilesController < ApplicationController
   def upload
     @csv_file = CsvFile.new(csv_file_params)
 
+    logger.debug "Starting file upload..."
     if @csv_file.save
       @csv_file.file.attach(params[:csv_file][:file])
+      logger.debug "File saved successfully, attaching file."
+      ProcessCsvJob.perform_later(@csv_file.id)
+      logger.debug "File attached, enqueuing background job."
       redirect_to csv_files_path, notice: "File uploaded successfully."
     else
       render :new
