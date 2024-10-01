@@ -34,7 +34,7 @@ class ProcessCsvJob < ApplicationJob
           status: charge_response["status"],  # e.g., "success", "failed"
           api_response: charge_response  # Store the API response if needed
         )
-      rescue => e
+      rescue
         # Log the transaction as failed
         Transaction.create!(
           csv_file_id: csv_file.id,
