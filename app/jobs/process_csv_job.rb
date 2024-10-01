@@ -1,3 +1,4 @@
+require "csv"
 class ProcessCsvJob < ApplicationJob
   queue_as :default
 
